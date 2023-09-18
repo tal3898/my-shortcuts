@@ -5,4 +5,12 @@
 	plg = log --graph --pretty=format:'%C(yellow)%h%Creset -%Cred%d%Creset %s %Cgreen| %cr %C(bold blue)| %an%Creset' --abbrev-commit --date=relative
 	recommit = commit --amend -m
 [alias]
-    acp = "!f() { git add -A && git commit -m \"$@\" && git push origin HEAD; }; f"
+	acp = "!f() { git add -A && git commit -m \"$@\" && git push origin HEAD; }; f"
+	myreset = reset HEAD --hard
+	lg = log --pretty=oneline
+	checkoutrc = checkout release-candidate
+	copyb = "!f() { git branch | grep $1 | pbcopy && echo \"Copied $(pbpaste)\"; }; f"
+	checkoutgp = "!f() { git branch | grep \"$1\" | pbcopy && git checkout $(pbpaste); }; f"
+	mypull = "!f() { git rev-parse --abbrev-ref HEAD | pbcopy && git pull origin $(pbpaste); }; f"
+	pullrc = "pull origin release-candidate"
+	mypush = "push origin HEAD"
