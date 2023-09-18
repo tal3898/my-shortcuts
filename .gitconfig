@@ -14,3 +14,4 @@
 	mypull = "!f() { git rev-parse --abbrev-ref HEAD | pbcopy && git pull origin $(pbpaste); }; f"
 	pullrc = "pull origin release-candidate"
 	mypush = "push origin HEAD"
+	update = "!f() { git pull origin release-candidate && git push origin HEAD; }; f"
