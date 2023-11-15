@@ -2,16 +2,21 @@
 	email = tal.bny3@gmail.com
 	name = tal
 [alias]
-	plg = log --graph --pretty=format:'%C(yellow)%h%Creset -%Cred%d%Creset %s %Cgreen| %cr %C(bold blue)| %an%Creset' --abbrev-commit --date=relative
-	recommit = commit --amend -m
-[alias]
-	acp = "!f() { git add -A && git commit -m \"$@\" && git push origin HEAD; }; f"
-	myreset = reset HEAD --hard
-	lg = log --pretty=oneline
+	acp = "!f() { git add . && git commit -m \"$1\" && git push origin HEAD; }; f"
+	ac = "!f() { git add . && git commit -m \"$1\"; }; f"
+	resetc = "!f() { git reset HEAD --hard && git clean -df; }; f"
+	plg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	lg = log --oneline
 	checkoutrc = checkout release-candidate
-	copyb = "!f() { git branch | grep $1 | pbcopy && echo \"Copied $(pbpaste)\"; }; f"
-	checkoutgp = "!f() { git branch | grep \"$1\" | pbcopy && git checkout $(pbpaste); }; f"
-	mypull = "!f() { git rev-parse --abbrev-ref HEAD | pbcopy && git pull origin $(pbpaste); }; f"
+        copyb = "!f() { git branch | grep $1 | pbcopy && echo \"Copied $(pbpaste)\"; }; f"
+        checkoutgp = "!f() { git branch | grep \"$1\" | pbcopy && git checkout $(pbpaste); }; f"
+	currb ="!f() { echo && git rev-parse --abbrev-ref HEAD && echo; }; f"
+	pullc = "!f() { git rev-parse --abbrev-ref HEAD | pbcopy && git pull origin $(pbpaste); }; f"
 	pullrc = "pull origin release-candidate"
-	mypush = "push origin HEAD"
+	pushc = "push origin HEAD"
+	chp = "cherry-pick"
+	st = status -s
+	newb = "!f() { git checkout -b \"$1\"; }; f"
+	revert-to = "!f() { git revert --no-commit $1..HEAD; }; f"
 	update = "!f() { git pull origin release-candidate && git push origin HEAD; }; f"
+	lastbranch = "for-each-ref --sort=committerdate refs/heads/ --format='%(committerdate:short) %(refname:short)'"
