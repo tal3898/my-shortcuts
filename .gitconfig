@@ -5,10 +5,11 @@
 	checkoutrc = checkout release-candidate
 	checkoutm = checkout master
 	delb = "!f() { git branch -D \"$1\"; }; f"
+	delOld = "!f() { git-delete-old-branches.sh; }; f"
 	delc = "!f() { current_branch=$(git branch --show-current); git checkout release-candidate && git branch -D "$current_branch"; }; f"
-        delRem = "!f() { read -p 'Are you sure? (y/n): ' -n 1 -r; echo; if [[ $REPLY =~ ^[Yy]$ ]]; then current_branch=$(git branch --show-current) && git checkout release-candidate && git branch -D "$current_branch" && git push origin --delete "$current_branch"; else echo 'Branch deletion cancelled.'; fi; }; f"
-        newb = "!f() { git checkout -b \"$1\"; }; f"
-  
+    delRem = "!f() { read -p 'Are you sure? (y/n): ' -n 1 -r; echo; if [[ $REPLY =~ ^[Yy]$ ]]; then current_branch=$(git branch --show-current) && git checkout release-candidate && git branch -D "$current_branch" && git push origin --delete "$current_branch"; else echo 'Branch deletion cancelled.'; fi; }; f"
+    newb = "!f() { git checkout -b \"$1\"; }; f"
+
 	acp-resolve = "!f() { git acp \"resolved conflicts\"; }; f"
 	acp-cr = "!f() { git acp \"organized the code and fixed cr comments\"; }; f"
 	acp-spot = "!f() { git acp \"spotless applied\"; }; f"
@@ -17,27 +18,31 @@
 	acp-org = "!f() { git acp \"minor changes and organized the code\"; }; f"
 	acp-gql = "!f() { git acp \"updated graphql schema\"; }; f"
 
-        hotfix = "!f() { current_branch=$(git branch --show-current) && hotfix.sh \"$current_branch\"; }; f"
-	debug = "!f() { git chp 60b8ee92b2 -n && git reset; }; f"
+    hotfix = "!f() { current_branch=$(git branch --show-current) && hotfix.sh \"$current_branch\"; }; f"
+	debug = "!f() { git chp 40dabf1b04 -n && git reset; }; f"
 
 	currb ="!f() { echo && git rev-parse --abbrev-ref HEAD && echo; }; f"
 	pullc = "!f() { git rev-parse --abbrev-ref HEAD | pbcopy && git pull origin $(pbpaste) --no-edit; }; f"
 	pullrc = "pull origin release-candidate --no-edit"
 	pushc = "push origin HEAD"
 	chp = "cherry-pick"
-	rcnewb = "!f() { git checkoutrc && git pullrc && git newb \"$1\"; }; f"
+	rcnewb = "!f() { git checkout release-candidate && git pull origin release-candidate && git checkout -b \"$1\"; }; f"
+	mnewb = "!f() { git checkout master && git pull origin master && git checkout -b \"$1\"; }; f"
 	plg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	lg = log --oneline
-        copyb = "!f() { git branch | grep $1 | pbcopy && echo \"Copied $(pbpaste)\"; }; f"
-        checkoutgp-backup = "!f() { git branch | grep \"$1\" | pbcopy && git checkout $(pbpaste); }; f"
+    copyb = "!f() { git branch | grep $1 | pbcopy && echo \"Copied $(pbpaste)\"; }; f"
+    checkoutgp-backup = "!f() { git branch | grep \"$1\" | pbcopy && git checkout $(pbpaste); }; f"
 	checkoutgp = "!f() { branch_togo=$(git branch | grep \"$1\"); git checkout "$branch_togo"; }; f"
 	st = status -s
 	revert-to = "!f() { git revert --no-commit $1..HEAD; }; f"
+	
 	updaterc = "!f() { git pull origin release-candidate --no-edit && git push origin HEAD; }; f"
 	updatem = "!f() { git pull origin master --no-edit && git push origin HEAD; }; f"
+	updatec = "!f() { git pullc && git pushc; }; f"
+	
 	lastbranch = "for-each-ref --sort=committerdate refs/heads/ --format='%(committerdate:short) %(refname:short)'"
 	diffc = diff HEAD~1 HEAD
-	checkoutn = "!f() { git fetch origin \"$1\" && git checkout $1; }; f"
+	review = "!f() { git fetch origin \"$1\" && git checkout $1; }; f"
 [user]
 	email = talb@upstream.auto
 	name = talbenyosef
